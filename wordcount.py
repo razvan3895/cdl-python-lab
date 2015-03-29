@@ -39,16 +39,34 @@ print_words() and print_top().
 
 import sys
 
-# +++your code here+++
-# Define print_words(filename) and print_top(filename) functions.
-# You could write a helper utility function that reads a file
-# and builds and returns a word/count dict for it.
-# Then print_words() and print_top() can just call the utility function.
+def print_words(filename):
+    import operator
+    d = word_dict(filename)
+    sorted_d = sorted(d.items(), key = operator.itemgetter(0))
+    for k in sorted_d:
+        print k[0], k[1]
 
-###
+def print_top(filename):
+    import operator
+    d = word_dict(filename)
+    sorted_d = sorted(d.items(), key=operator.itemgetter(1))
+    sorted_d.reverse()
+    for i in range(20):
+        print sorted_d[i][0], sorted_d[i][1]
 
-# This basic command line argument parsing code is provided and
-# calls the print_words() and print_top() functions which you must define.
+def word_dict(filename):
+    d = {}
+    f = open(filename, "r")
+    for line in f:
+        for word in line.lower().split():
+            if len(word):
+                if d.has_key(word):
+                    d[word] += 1
+                else:
+                    d[word] = 1
+    import operator
+    return d
+
 def main():
   if len(sys.argv) != 3:
     print('usage: ./wordcount.py {--count | --topcount} file')
